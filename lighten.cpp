@@ -19,11 +19,11 @@ void lighten(String imageFilePathLighten)
     Mat new_image = Mat::zeros(image.size(), image.type());
 
     // Enter the value alpha and bete
-    cout << " Basic Linear Transforms " << endl;
+    cout << " Linear Transforms " << endl;
     cout << "-------------------------" << endl;
-    cout << "* Enter the alpha value [1.0-3.0]: ";
+    cout << "Enter the alpha value [1.0-3.0]: ";
     cin >> alpha;
-    cout << "* Enter the beta value [0-100]: ";
+    cout << "Enter the beta value [0-100]: ";
     cin >> beta;
 
     //Execution of operations of the formula g(x,y) = alpha*f(x,y) + beta
