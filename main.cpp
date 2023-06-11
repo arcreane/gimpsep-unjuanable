@@ -68,7 +68,6 @@ int main() {
             cin >> imageFilePath;
 
             // Call the performOperation function
-
             performOperation(imageFilePath);
             break;
         case 5:
