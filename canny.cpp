@@ -6,59 +6,54 @@
 
 using namespace cv;
 using namespace std;
-//²ÎÊı³õÊ¼»¯
-int thresholdValue1 = 270;//ÖÍºóĞÔãĞÖµ1
-int kenelValueCanny = 4;//½µÔëÄÚºËÖµ
+// Initialization
+int thresholdValue1 = 270;//Hysteresis threshold1
+int kenelValueCanny = 4;//Noise reduction kernel value
 const static int MaxKenelValueCanny = 10;
 const static int MaxThresholdValue1 = 300;
 String imageFilePathCanny;
 
-//»Øµ÷º¯Êı
+//Callback functions
 static void callBackCanny(int, void*) {
 
 	Mat srcImage = imread(imageFilePathCanny, 3);
 	Mat dstImage, grayImage, denoiseImage, cannyImage;
 	if (!srcImage.data) {
-		cout << "Í¼Ïñ¶ÁÈ¡³ö´í";
+		cout << "Image read error";
 		return;
 	}
 
-	//´´½¨ÓësrcImageÍ¬ÀàĞÍºÍ´óĞ¡µÄ¾ØÕó 
+	//Create a matrix of the same type and size as srcImage 
 	dstImage.create(srcImage.size(), srcImage.type());
 
-	//½«Ô­Í¼Ïñ×ª»»Îª»Ò¶ÈÍ¼Ïñ  
+	//Convert to grayscale image  
 	cvtColor(srcImage, grayImage, CV_BGR2GRAY);
 
-	//¸ßË¹ÂË²¨½µÔë
+	//Gaussian filter noise reduction
 	GaussianBlur(grayImage, denoiseImage, Size(kenelValueCanny * 2 + 1, kenelValueCanny * 2 + 1), 0, 0);
 
-	//Ê¹ÓÃCannyËã×Ó
+	//Using the Canny operator
 	Canny(denoiseImage, cannyImage, thresholdValue1, thresholdValue1 * 2 / 3, 3);
 
-	//½«dstImageÄÚµÄËùÓĞÔªËØÉèÖÃÎª0
 	dstImage = Scalar::all(0);
 
-	//ÒÔcannyImage×÷ÎªÑÚÂë£¬½«Ô­Í¼srcImage¿½µ½Ä¿±êÍ¼dstImageÖĞ
-	srcImage.copyTo(dstImage, cannyImage);
+	srcImage.copyTo(dstImage, cannyImage);  //Use cannyImage as a mask
 
-	//ÏÔÊ¾
-	imshow("Ô­Í¼", srcImage);
-	imshow("CannyËã×Ó±ßÔµ¼ì²âĞ§¹ûÔ¤ÀÀ£º", dstImage);
+	imshow("Orignal Image", srcImage);
+	imshow("Canny operator detection resultsï¼š", dstImage);
 	imwrite("E:/opencv/Canny.jpg", dstImage);
 }
 
-//´´½¨½ø¶ÈÌõ
+//Create progress bar
 void Canny(String srcFilePathCanny) {
 
 	imageFilePathCanny = srcFilePathCanny;
 
-	namedWindow("CannyËã×Ó±ßÔµ¼ì²âĞ§¹ûÔ¤ÀÀ£º", WINDOW_AUTOSIZE);
+	namedWindow("Canny operator detection resultsï¼š", WINDOW_AUTOSIZE);
 
-	//´´½¨½ø¶ÈÌõ
-	createTrackbar("ÄÚºËÖµ£º", "CannyËã×Ó±ßÔµ¼ì²âĞ§¹ûÔ¤ÀÀ£º", &kenelValueCanny, MaxKenelValueCanny, callBackCanny);
-	createTrackbar("ãĞÖµÒ»£º", "CannyËã×Ó±ßÔµ¼ì²âĞ§¹ûÔ¤ÀÀ£º", &thresholdValue1, MaxThresholdValue1, callBackCanny);
+	createTrackbar("Kernel Valueï¼š", "Canny operator detection resultsï¼š", &kenelValueCanny, MaxKenelValueCanny, callBackCanny);
+	createTrackbar("Threshold Iï¼š", "Canny operator detection resultsï¼š", &thresholdValue1, MaxThresholdValue1, callBackCanny);
 
-	//»Øµ÷
 	callBackCanny(kenelValueCanny, 0);
 	callBackCanny(thresholdValue1, 0);
 
