@@ -2,3 +2,4 @@
 projet OpenCV
 Each .cpp file corresponds to the relevant function implemented, and all functions can be implemented in main.cpp.
 The "C++ project.zip" is separate from the other .cpp files. It is the integration of all functions and uses Qt for windowing.
+MultimediaApplicationFinalProject.PDF is our report.
